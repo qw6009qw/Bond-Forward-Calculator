@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bond Forward Price Calculator</title>
+<style>
+body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f4f4f4; }
+.calculator-container { background-color: white; padding: 40px; border-radius: 12px; box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); width: 400px; }
+h1 { text-align: center; margin-bottom: 30px; color: #333; }
+h2 { margin-bottom: 20px; color: #555; }
+label { display: block; margin-bottom: 8px; color: #555; font-weight: bold; }
+input[type="number"] { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 16px; }
+button { padding: 12px 25px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s ease; width: 100%; }
+button:hover { background-color: #0056b3; }
+#result, #ry_result, #f_result { margin-top: 20px; font-weight: bold; color: #333; font-size: 18px; text-align: center; }
+.cub-disclaimer { text-align: center; margin-top: 20px; color: #777; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="calculator-container">
+<h1>Bond Forward Price Calculator</h1>
+<h2>Calculate Implied Repo Rate (r-y)</h2>
+<label for="F_input">Forward Price (F):</label>
+<input type="number" id="F_input" name="F_input"><br>
+<label for="S_input">Spot Price (S):</label>
+<input type="number" id="S_input" name="S_input"><br>
+<label for="t_input">Time to Maturity (t):</label>
+<input type="number" id="t_input" name="t_input"><br>
+<button onclick="calculate_ry()">Calculate</button>
+<p id="ry_result"></p>
+<h2>Calculate Forward Price (F)</h2>
+<label for="S">Spot Price (S):</label>
+<input type="number" id="S" name="S"><br>
+<label for="r">Risk-Free Rate (r):</label>
+<input type="number" id="r" name="r"><br>
+<label for="y">Coupon Rate (y):</label>
+<input type="number" id="y" name="y"><br>
+<label for="t">Time to Maturity (t):</label>
+<input type="number" id="t" name="t"><br>
+<button onclick="calculate_f()">Calculate</button>
+<p id="f_result"></p>
+</div>
+<div class="cub-disclaimer">Only for CUB</div>
+<script>
+function calculate_ry() {
+  var F = parseFloat(document.getElementById("F_input").value);
+  var S = parseFloat(document.getElementById("S_input").value);
+  var t = parseFloat(document.getElementById("t_input").value);
+  if (isNaN(F) || isNaN(S) || isNaN(t) || t === 0) {
+    document.getElementById("ry_result").textContent = "請輸入有效的數字 (t 不能為 0)";
+    return;
+  }
+  var ry = Math.log(F / S) / t;
+  document.getElementById("ry_result").textContent = "r-y = " + ry.toFixed(4);
+}
+function calculate_f() {
+  var S = parseFloat(document.getElementById("S").value);
+  var r = parseFloat(document.getElementById("r").value);
+  var y = parseFloat(document.getElementById("y").value);
+  var t = parseFloat(document.getElementById("t").value);
+  if (isNaN(S) || isNaN(r) || isNaN(y) || isNaN(t)) {
+    document.getElementById("f_result").textContent = "請輸入有效的數字";
+    return;
+  }
+  var F = S * Math.exp((r - y) * t);
+  document.getElementById("f_result").textContent = "F = " + F.toFixed(2);
+}
+</script>
+</body>
+</html>
